@@ -4,8 +4,6 @@
 
 import os
 import sys
-BASE_PATH = "/home/sysgen/Jiawen/SupContrast-master"
-sys.path.append(BASE_PATH) 
 
 import argparse
 
@@ -374,62 +372,28 @@ def feature_classifier(opt):
     with open(opt.prediction_save_path, "wb") as f:
         pickle.dump((knn_predictions, distance_predictions, labels_testing), f)
 
-    # Process results AUROC and OSCR
+    # Process results AUROC
     # for AUROC, convert labels to binary labels, assume inliers are positive
     labels_binary_known = [1 if i < 100 else 0 for i in labels_testing_known]
     labels_binary_unknown = [1 if i < 100 else 0 for i in labels_testing_unknown]
     labels_binary = np.array(labels_binary_known + labels_binary_unknown)
-    #print("labels_binary", labels_binary)
 
-    probs_binary = np.concatenate((prediction_logits_known, prediction_logits_unknown), axis=0) 
-    #with open("./prediction_logits_unknown_train_down", "wb") as f:
-    #    pickle.dump(prediction_logits_unknown, f)
-
-    # TODO visualize the scores !!!!!
-    #plt.scatter(range(len(prediction_logits_known_dis_in)), prediction_logits_known_dis_in)
-    #plt.savefig("./prediction_logits_known_dis_in.pdf")
-    #plt.close("all")
-    #plt.scatter(range(len(prediction_logits_unknown_dis_in)), prediction_logits_unknown_dis_in)
-    #plt.savefig("./prediction_logits_unknown_dis_in.pdf")
+    probs_binary = np.concatenate((prediction_logits_known, prediction_logits_unknown), axis=0)
 
     auroc = AUROC(labels_binary, probs_binary, opt)
     print("AUROC is: ", auroc)
 
-    probs_binary_dis = np.concatenate((prediction_logits_known_dis_in, prediction_logits_unknown_dis_in), axis=0) 
-    #print("probs_binary", probs_binary_dis)
+    probs_binary_dis = np.concatenate((prediction_logits_known_dis_in, prediction_logits_unknown_dis_in), axis=0)
 
     auroc = AUROC(labels_binary, probs_binary_dis, opt)
     print("Dis AUROC is: ", auroc)
-    
-    # AUROC based on LoF
-    #all_testing_features = np.concatenate((features_testing_known_backbone, features_testing_unknown_backbone), axis=0)
-    #scores = LoF(all_testing_features, sorted_features_examplar_backbone, opt)
-    #auroc = AUROC(labels_binary, scores, opt)
-    #print("LoF AUROC is: ", auroc)
 
-    # OSCR
-    #oscr = OSCR(np.array(prediction_logits_known_dis_out), np.array(prediction_logits_unknown_dis_out), predictions_known, labels_testing_known)
-    #print("OSCR is: ", oscr)
 
-    #print("Acc Known: ", acc_known)
-
-    return auroc             # oscr, acc_known
+    return auroc
 
         
 if __name__ == "__main__":
     
     opt = parse_option()
     
-    auroc = feature_classifier(opt)                        # oscr, acc_known
-
-    """
-    1. use penultimate layer instead of head
-    2. use ecudien distance 
-    3. use kth distance instead of average distance
-    4. feature normalization
-    5. downsample training data
-    """
-
-    """
-    pay attention to the samples at boundary
-    """
+    auroc = feature_classifier(opt)

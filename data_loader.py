@@ -770,14 +770,7 @@ if __name__ == "__main__":
         transforms.RandomHorizontalFlip(),
         transforms.ToTensor(),
         transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])                                      # (0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)
-    # train_set = iCIFAR100(root='../datasets/', train=True,
-    #                        classes=range(0, 10),
-    #                        download=False, transform=None)
-    # train_set = apply_transform(train_set, TwoCropTransform(transform))
-    # train_loader = torch.utils.data.DataLoader(train_set, batch_size=200, shuffle=True, num_workers=1)
-    # for i, (img, l) in enumerate(train_loader):
-    #     if i == 0:
-    #         break
+
     root_path = "../datasets"
     dataset = customSVHN(root='../datasets', classes=[0])
     print(dataset[0][1])

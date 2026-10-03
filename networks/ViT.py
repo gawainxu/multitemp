@@ -6,12 +6,6 @@ from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 import ml_collections
 
-from dataUtil import image_size_mapping
-
-
-# helpers
-
-
 
 def get_b16_config_cifar():
     """

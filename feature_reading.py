@@ -1,8 +1,6 @@
 import os
 import platform
 import sys
-BASE_PATH = "/home/sysgen/Jiawen/causal_OSR"
-sys.path.append(BASE_PATH) 
 
 import argparse
 

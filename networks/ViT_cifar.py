@@ -113,7 +113,3 @@ if __name__ == "__main__":
     x = torch.randn(b, c, h, w)
     net = ViT_cifar(in_c=c, num_classes=10, img_size=h, patch=16, dropout=0.1, num_layers=7, hidden=384, head=12,
                    mlp_hidden=384, is_cls_token=False)
-    # out = net(x)
-    # out.mean().backward()
-    #torchsummary.summary(net, (c, h, w))
-    # print(out.shape)
